@@ -1,0 +1,26 @@
+version: '2'
+services:
+  redis:
+    image: redis:2.8
+    ports:
+      - "6379:6379"
+
+  bundler-cache:
+    image: busybox
+    volumes:
+      - ./tmp/bundler_cache:/cache
+
+  web:
+    build: .
+    tty: true
+    stdin_open: true
+    env_file: ./.env
+    command:  bundle exec puma -C config/puma.rb
+    ports:
+      - "5000:5000"
+    links:
+      - redis
+    volumes:
+      - .:/myapp
+    volumes_from:
+      - bundler-cache
