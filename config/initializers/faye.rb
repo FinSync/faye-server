@@ -10,6 +10,7 @@ FayeServer.config.tap do |config|
   config[:ping]=    Integer(ENV['FAYE_KEEPALIVE'] || 45)
 
   redis_url = ENV['REDIS_URL'] || ENV['REDISTOGO_URL'] || ENV['FAYE_REDIS_URL']
+  redis_url = "http://localhost:6379"
   if redis_url
     config[:engine] = { type: Faye::Redis, uri: redis_url }
   end
